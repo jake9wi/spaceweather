@@ -6,20 +6,19 @@ import matplotlib.pyplot as plt
 import requests
 import pandas as pd
 
-"""
+
 r = requests.get('https://services.swpc.noaa.gov/products/solar-wind/mag-1-day.json')
 
 r.raise_for_status()
-"""
+
 
 datecols = [
     'time_tag',
 ]
 
 data = pd.read_json(
-    'mag-1-day.json',
+    r.text,
     convert_dates=datecols,
-    #orient='records',
 )
 
 data = data.drop([0])
