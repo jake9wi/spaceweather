@@ -19,12 +19,34 @@ data = pd.read_json(
     convert_dates=datecols,
 )
 
-print(data)
+alpha = plt.figure(
+    1,
+    figsize=(10,10)
+)
 
-plt.figure(1,figsize=(10,10))
+alpha.suptitle("10.7 centimetre Flux")
 
-plt.scatter(data['time_tag'], data['flux'])
+plt.bar(
+    data['time_tag'],
+    data['flux'],
+)
 
-plt.savefig('../../web/img/flux107.svg')
+axes = plt.gca()
+
+plt.xlabel("Time")
+
+plt.ylabel("Solar Flux Units (sfu)")
+
+axes.set_ylim(
+    [
+        data['flux'].min(),
+        data['flux'].max() + 1,
+    ]
+)
+
+axes.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
+axes.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))
+
+plt.savefig('../web/img/flux107.svg')
 
 plt.close(1)
