@@ -1,2 +1,9 @@
 A set of python files to process json data fom SWPC
 as well as html to plot the results.
+
+Dependencies are:
+- matplotlib
+- pandas
+- requests
+
+73s
