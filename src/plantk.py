@@ -3,6 +3,7 @@ matplotlib.use('agg')
 
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+
 import requests
 import pandas as pd
 
@@ -16,7 +17,7 @@ datecols = [
 ]
 
 data = pd.read_json(
-    r.text
+    r.text,
     convert_dates=datecols,
     #orient='records',
 )
@@ -37,33 +38,35 @@ data['Kp_fraction'] = data['Kp_fraction'].astype('float64')
 
 data['time_tag'] = pd.to_datetime(data['time_tag'])
 
-alpha = plt.figure(
+###
+
+plt.style.use('dark_background')
+
+fig = plt.figure(
     1,
     figsize=(10,10)
 )
 
-alpha.suptitle("Plantary K Index")
+fig.suptitle("Plantary K Index")
 
-plt.bar(
+ax = plt.gca()
+
+ax.bar(
     data['time_tag'],
     data['Kp_fraction'],
 )
 
-axes = plt.gca()
+ax.set_xlabel("Time")
+ax.set_ylabel("K Index")
 
-plt.xlabel("Time")
+ax.set_ylim([0,9])
+ax.set_yticks([0,1,2,3,4,5,6,7,8,9])
 
-plt.ylabel("K Index")
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
+ax.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))
 
-axes.set_ylim([0,9])
+ax.grid(b=True, which='Major', color='gray', lw=0.8)
 
-axes.set_yticks([0,1,2,3,4,5,6,7,8,9])
-
-axes.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
-axes.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))
-
-plt.grid(b=True, which='Major', color='black', lw=0.8)
-
-plt.savefig('../web/img/kp.svg')
+fig.savefig('../web/img/kp.svg')
 
 plt.close(1)

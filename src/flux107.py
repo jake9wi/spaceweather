@@ -2,6 +2,8 @@ import matplotlib
 matplotlib.use('agg')
 
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
 import requests
 import pandas as pd
 
@@ -19,34 +21,37 @@ data = pd.read_json(
     convert_dates=datecols,
 )
 
-alpha = plt.figure(
+###
+
+plt.style.use('dark_background')
+
+fig = plt.figure(
     1,
     figsize=(10,10)
 )
 
-alpha.suptitle("10.7 centimetre Flux")
+fig.suptitle("10.7 centimetre Flux")
 
-plt.bar(
+ax = plt.gca()
+
+ax.bar(
     data['time_tag'],
     data['flux'],
 )
 
-axes = plt.gca()
+ax.set_xlabel("Time")
+ax.set_ylabel("Solar Flux Units (sfu)")
 
-plt.xlabel("Time")
-
-plt.ylabel("Solar Flux Units (sfu)")
-
-axes.set_ylim(
+ax.set_ylim(
     [
         data['flux'].min(),
         data['flux'].max() + 1,
     ]
 )
 
-axes.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
-axes.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
+ax.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))
 
-plt.savefig('../web/img/flux107.svg')
+fig.savefig('../web/img/flux107.svg')
 
 plt.close(1)
