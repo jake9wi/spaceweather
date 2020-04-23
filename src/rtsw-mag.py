@@ -1,13 +1,14 @@
+"""Plot RTSW Mag."""
 import matplotlib
 matplotlib.use('agg')
 
 import matplotlib.pyplot as plt
-#import matplotlib.dates as mdates
+# import matplotlib.dates as mdates
 import requests
 import pandas as pd
 
-
-r = requests.get('https://services.swpc.noaa.gov/products/solar-wind/mag-1-day.json')
+url = 'https://services.swpc.noaa.gov/products/solar-wind/mag-1-day.json'
+r = requests.get(url)
 
 r.raise_for_status()
 
@@ -32,7 +33,7 @@ data = data.rename(
         4: "lon_gsm",
         5: "lat_gsm",
         6: "bt",
-    }
+    },
 )
 
 data['bz_gsm'] = data['bz_gsm'].astype('float64')
@@ -43,26 +44,26 @@ data['time_tag'] = pd.to_datetime(data['time_tag'])
 ylimit = abs(max(
     [
         abs(data['bz_gsm'].max()),
-        abs(data['bz_gsm'].min()),       
-    ]
+        abs(data['bz_gsm'].min()),
+    ],
 ))
 
 yrange = [(ylimit + 0.5) * -1, ylimit + 0.5]
 
-###
+# # #
 
 plt.style.use('dark_background')
 
 fig, ax = plt.subplots(
     2, 1,
-    figsize=(10,20),
+    figsize=(10, 20),
 )
 
-###
+# # #
 
 fig.suptitle("Real Time Solar Wind - Magnetometre")
 
-###
+# # #
 
 ax[0].scatter(
     data['time_tag'],
@@ -77,7 +78,7 @@ ax[0].set_ylim(yrange)
 
 ax[0].axhline(y=0)
 
-###
+# # #
 
 ax[1].scatter(
     data['time_tag'],
@@ -92,18 +93,18 @@ ax[1].set_ylabel("nano-Teslas")
 ax[1].set_ylim(
     (
         0,
-        (data['bt'].max()+0.5)
-    )
+        (data['bt'].max() + 0.5),
+    ),
 )
 
 ax[1].axhline(y=0)
 
-###
+# # #
 
 fig.savefig('../web/img/rtsw-mag.svg')
 
 plt.close(1)
 
-#axes.set_yticks([0,1,2,3,4,5,6,7,8,9])
-#axes.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
-#axes.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))
+# axes.set_yticks([0,1,2,3,4,5,6,7,8,9])
+# axes.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
+# axes.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))

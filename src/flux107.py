@@ -1,9 +1,9 @@
+"""Plot the json file containg 10.7cm flux."""
 import matplotlib
 matplotlib.use('agg')
 
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-
 import requests
 import pandas as pd
 
@@ -27,7 +27,7 @@ plt.style.use('dark_background')
 
 fig = plt.figure(
     1,
-    figsize=(10,10)
+    figsize=(10, 10),
 )
 
 fig.suptitle("10.7 centimetre Flux")
@@ -46,7 +46,7 @@ ax.set_ylim(
     [
         data['flux'].min(),
         data['flux'].max() + 1,
-    ]
+    ],
 )
 
 ax.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
