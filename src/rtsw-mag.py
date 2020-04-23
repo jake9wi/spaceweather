@@ -43,13 +43,11 @@ data['time_tag'] = pd.to_datetime(data['time_tag'])
 ylimit = abs(max(
     [
         abs(data['bz_gsm'].max()),
-        abs(data['bz_gsm'].min()),
-        abs(data['bt'].max()),
-        abs(data['bt'].min()),        
+        abs(data['bz_gsm'].min()),       
     ]
 ))
 
-yrange = [ylimit * -1, ylimit]
+yrange = [(ylimit + 0.5) * -1, ylimit + 0.5]
 
 ###
 
@@ -62,7 +60,7 @@ fig, ax = plt.subplots(
 
 ###
 
-fig.suptitle("Real Time Solar Wind - Mag")
+fig.suptitle("Real Time Solar Wind - Magnetometre")
 
 ###
 
@@ -72,7 +70,7 @@ ax[0].scatter(
     s=2,
 )
 
-ax[0].set_title("bz_gsm")
+ax[0].set_title("Vertical Component (bz_gsm)")
 ax[0].set_xlabel("Time")
 ax[0].set_ylabel("nano-Teslas")
 ax[0].set_ylim(yrange)
@@ -87,10 +85,17 @@ ax[1].scatter(
     s=2,
 )
 
-ax[1].set_title("bt")
+ax[1].set_title("Field Total")
 ax[1].set_xlabel("Time")
 ax[1].set_ylabel("nano-Teslas")
-ax[1].set_ylim(yrange)
+
+ax[1].set_ylim(
+    (
+        0,
+        (data['bt'].max()+0.5)
+    )
+)
+
 ax[1].axhline(y=0)
 
 ###

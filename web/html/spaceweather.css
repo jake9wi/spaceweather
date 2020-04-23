@@ -10,6 +10,7 @@
 }
 
 body {
+    min-width:1400px;
     padding:2pc;
     padding-right:4pc;
     font-size:14pt;
@@ -21,4 +22,16 @@ img {
 
 li {
     padding-bottom:6pt;
+}
+
+table {
+    border:2pt solid #840;
+}
+
+th,td {
+    border:1pt solid #840;
+}
+
+td {
+    text-align:center;
 }
