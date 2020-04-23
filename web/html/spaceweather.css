@@ -1,0 +1,24 @@
+@media screen {
+    body {
+	color:white;
+	background-color:#222;
+    }
+
+    a {
+	color:#c00;
+    }
+}
+
+body {
+    padding:2pc;
+    padding-right:4pc;
+    font-size:14pt;
+}
+
+img {
+    margin-bottom:2pc;
+}
+
+li {
+    padding-bottom:6pt;
+}
