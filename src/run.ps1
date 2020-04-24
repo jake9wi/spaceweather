@@ -7,6 +7,8 @@ if (($daily -eq $false) -and ($fast -eq $false)) {
     throw 'at least one of daily or fast must be set'
 }
 
+Push-Location -path $PSScriptRoot
+
 $dirstruct = @(
     '..\..\spaceweather\web\html\',
     '..\..\spaceweather\web\img\',
@@ -37,10 +39,15 @@ if (Get-Command -Name 'python.exe' -ErrorAction SilentlyContinue) {
     throw 'CAN NOT FIND "python.exe".'
 }
 
+${flux107} = '.\flux107.py'
+$planetk = '.\planetk.py'
+$rtswmag = '.\rtswmag.py'
+$rtswplasma = '.\rtswplasma.py'
+
 if ($daily -eq $true) {
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList '.\flux107.py' `
+      -ArgumentList  ${flux107} `
       -NoNewWindow `
       -Wait
 }
@@ -48,19 +55,21 @@ if ($daily -eq $true) {
 if ($fast -eq $true) {
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList '.\plantk.py' `
+      -ArgumentList  $planetk `
       -NoNewWindow `
       -Wait
 
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList '.\rtsw-mag.py' `
-      -NoNewWindow `
+      -ArgumentList $rtswmag `
+      -NoNewWindow  `
       -Wait
 
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList '.\rtsw-plasma.py' `
+      -ArgumentList $rtswplasma `
       -NoNewWindow `
       -Wait
 }
+
+Pop-Location
