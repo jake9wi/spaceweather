@@ -1,6 +1,6 @@
 """Plot Kp index."""
 import matplotlib
-matplotlib.use('agg')
+matplotlib.use('cairo')
 
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
