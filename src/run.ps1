@@ -39,6 +39,7 @@ if (Get-Command -Name 'python.exe' -ErrorAction SilentlyContinue) {
     throw 'CAN NOT FIND "python.exe".'
 }
 
+$usgsmag = '.\usgsgeomag.py'
 ${flux107} = '.\flux107.py'
 $planetk = '.\planetk.py'
 $rtswmag = '.\rtswmag.py'
@@ -53,6 +54,12 @@ if ($daily -eq $true) {
 }
 
 if ($fast -eq $true) {
+    Start-Process `
+      -FilePath 'python.exe' `
+      -ArgumentList  $usgsmag `
+      -NoNewWindow `
+      -Wait
+
     Start-Process `
       -FilePath 'python.exe' `
       -ArgumentList  $planetk `
