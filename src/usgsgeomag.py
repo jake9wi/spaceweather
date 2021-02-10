@@ -168,6 +168,7 @@ fig.suptitle("USGS Mag")
 ax[0].plot(
     dst['dtg'],
     dst['dst'],
+    lw=0.8,
 )
 ax[0].axhline(y=0)
 ax[0].set_title("DST")
@@ -194,6 +195,7 @@ ax[0].xaxis.set_minor_formatter(mdates.DateFormatter("%d%H%M"))
 ax[1].plot(
     bou['dtg'],
     bou['H'],
+    lw=0.8,
 )
 
 ax[1].set_title("H (Bou)")
@@ -214,6 +216,7 @@ ax[1].xaxis.set_minor_formatter(mdates.DateFormatter("%d%H%M"))
 ax[2].plot(
     frd['dtg'],
     frd['H'],
+    lw=0.8,
 )
 
 ax[2].set_title("H (Frd)")
