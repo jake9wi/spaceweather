@@ -39,6 +39,7 @@ if (Get-Command -Name 'python.exe' -ErrorAction SilentlyContinue) {
     throw 'CAN NOT FIND "python.exe".'
 }
 
+$swpcaaa = '.\swpcaaa.py'
 $usgsmag = '.\usgsgeomag.py'
 ${flux107} = '.\flux107.py'
 $planetk = '.\planetk.py'
@@ -49,6 +50,12 @@ if ($daily -eq $true) {
     Start-Process `
       -FilePath 'python.exe' `
       -ArgumentList  ${flux107} `
+      -NoNewWindow `
+      -Wait
+
+    Start-Process `
+      -FilePath 'python.exe' `
+      -ArgumentList  $swpcaaa `
       -NoNewWindow `
       -Wait
 }
