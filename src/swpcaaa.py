@@ -48,11 +48,38 @@ def getAAA():
 
     return data
 
+def getPRED():
+    """Retirve DST data."""
+    r = requests.get(
+        'https://services.swpc.noaa.gov/json/predicted_fredericksburg_a_index.json'
+    )
+
+    r.raise_for_status()
+
+    raw = pd.read_json(
+        r.text
+    )
+
+    predict = {
+        'dtg': [
+            raw.iloc[0,0] + dt.timedelta(days=1),
+            raw.iloc[0,0] + dt.timedelta(days=2),
+            raw.iloc[0,0] + dt.timedelta(days=3),
+        ],
+        'value':[
+            raw.iloc[0,1],
+            raw.iloc[0,2],
+            raw.iloc[0,3],
+        ],
+    }
+
+    data = pd.DataFrame(predict)
+
+    return data
 
 
 aaa = getAAA()
-
-# print(aaa.head(20))
+pred = getPRED()
 
 ###
 
@@ -69,15 +96,15 @@ ax[0].bar(
     aaa['dtg'],
     aaa['A Planet'],
 )
-ax[0].axhline(y=0)
+
 ax[0].set_title("Planet (Est)")
 ax[0].set_xlabel("Day of Year")
 ax[0].set_ylabel("A")
 
 ax[0].set_ylim(
     [
-        0,
-        100,
+        -1,
+        101,
     ],
 )
 
@@ -92,18 +119,28 @@ ax[0].xaxis.set_minor_formatter(mdates.DateFormatter("%j"))
 # ax[0].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
 ax[1].bar(
+    pred['dtg'],
+    pred['value'],
+    zorder=1,
+    color='red',
+    label='Prediction',
+)
+
+ax[1].bar(
     aaa['dtg'],
     aaa['A Fred'],
+    zorder=2,
+    label='Observation',
 )
-ax[1].axhline(y=0)
+
 ax[1].set_title("Fredericksburg (Est)")
 ax[1].set_xlabel("Day of Year")
 ax[1].set_ylabel("A")
 
 ax[1].set_ylim(
     [
-        0,
-        100,
+        -1,
+        101,
     ],
 )
 
@@ -117,6 +154,8 @@ ax[1].xaxis.set_major_formatter(mdates.DateFormatter("%j"))
 ax[1].xaxis.set_minor_formatter(mdates.DateFormatter("%j"))
 # ax[1].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
+ax[1].legend()
+
 ax[2].bar(
     aaa['dtg'],
     aaa['A Coll'],
@@ -128,8 +167,8 @@ ax[2].set_ylabel("A")
 
 ax[2].set_ylim(
     [
-        0,
-        100,
+        -1,
+        101,
     ],
 )
 
