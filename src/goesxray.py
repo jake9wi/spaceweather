@@ -70,7 +70,7 @@ ax.plot(
     lw=0.7,
     color='red',
     zorder=2,
-    label="LONG (0.1-0.8nm)"
+    label="Obsv: LONG (0.1-0.8nm)"
 )
 
 ax.plot(
@@ -79,7 +79,7 @@ ax.plot(
     lw=0.7,
     color='blue',
     zorder=1,
-    label="SHORT (0.05-0.4nm)"
+    label="Obsv: SHORT (0.05-0.4nm)"
 )
 
 ax.scatter(
@@ -88,13 +88,13 @@ ax.scatter(
     lw=1,
     color='yellow',
     zorder=3,
-    label="BACKGROUND"
+    label="Obsv: BACKGROUND"
 )
 
-ax.axhline(y=1e-4, label='X', color='purple', lw=1)
-ax.axhline(y=1e-5, label='M', color='red', lw=1)
-ax.axhline(y=1e-6, label='C', color='yellow', lw=1)
-ax.axhline(y=1e-7, label='B', color='green', lw=1)
+ax.axhline(y=1e-4, label='Class X', color='purple', lw=1)
+ax.axhline(y=1e-5, label='Class M', color='red', lw=1)
+ax.axhline(y=1e-6, label='Class C', color='yellow', lw=1)
+ax.axhline(y=1e-7, label='Class B', color='green', lw=1)
 
 ax.set_xlabel("Time (DoY:Hr)")
 ax.set_ylabel("Watts per Square Metre")
