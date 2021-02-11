@@ -3,9 +3,11 @@ import matplotlib
 matplotlib.use('cairo')
 
 import matplotlib.pyplot as plt
-# import matplotlib.dates as mdates
+import matplotlib.dates as mdates
 import requests
 import pandas as pd
+
+dtgfmt = "%j:%H"
 
 url = 'https://services.swpc.noaa.gov/products/solar-wind/plasma-1-day.json'
 r = requests.get(url)
@@ -61,9 +63,10 @@ ax[0].scatter(
 )
 
 ax[0].set_title("speed")
-ax[0].set_xlabel("Time")
+ax[0].set_xlabel("Time (DoY:Hr)")
 ax[0].set_ylabel("km/s")
-
+ax[0].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 # # #
 
 ax[1].scatter(
@@ -73,8 +76,10 @@ ax[1].scatter(
 )
 
 ax[1].set_title("density")
-ax[1].set_xlabel("Time")
+ax[1].set_xlabel("Time (DoY:Hr)")
 ax[1].set_ylabel("1/cm3")
+ax[1].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 
 # # #
 
@@ -85,8 +90,10 @@ ax[2].scatter(
 )
 
 ax[2].set_title("temperature")
-ax[2].set_xlabel("Time")
+ax[2].set_xlabel("Time (DoY:Hr)")
 ax[2].set_ylabel("Kelvins")
+ax[2].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 
 # # #
 

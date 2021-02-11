@@ -8,6 +8,7 @@ import requests
 import pandas as pd
 import datetime as dt
 
+dtgfmt = "%j"
 
 def obsv():
     robsv = requests.get(
@@ -99,7 +100,7 @@ ax.bar(
     width=0.5,
 )
 
-ax.set_xlabel("Time (UT?)")
+ax.set_xlabel("Time (DoY)")
 ax.set_ylabel("Solar Flux Units (sfu)")
 
 ax.set_ylim(
@@ -118,8 +119,8 @@ ax.set_ylim(
     ],
 )
 
-ax.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
-ax.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))
+ax.xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax.xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 
 ax.legend()
 

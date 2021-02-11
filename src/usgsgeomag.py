@@ -10,6 +10,8 @@ import pandas as pd
 import pathlib as pl
 import datetime as dt
 
+dtgfmt = '%j:%H'
+
 deltaT = dt.timedelta(
     hours=73,
 )
@@ -172,7 +174,7 @@ ax[0].plot(
 )
 ax[0].axhline(y=0)
 ax[0].set_title("DST")
-ax[0].set_xlabel("Time")
+ax[0].set_xlabel("Time (DoY:Hr)")
 ax[0].set_ylabel("DST (nT)")
 
 if dst['dst'].max() <= 0:
@@ -187,8 +189,8 @@ ax[0].set_ylim(
     ],
 )
 ax[0].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.2f'))
-ax[0].xaxis.set_major_formatter(mdates.DateFormatter("%d%H%M"))
-ax[0].xaxis.set_minor_formatter(mdates.DateFormatter("%d%H%M"))
+ax[0].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 # ax[0].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 ax[0].grid(b=True, axis='x', which='Major', color='gray', lw=0.8)
 
@@ -199,7 +201,7 @@ ax[1].plot(
 )
 
 ax[1].set_title("H (Bou)")
-ax[1].set_xlabel("Time")
+ax[1].set_xlabel("Time (DoY:Hr)")
 ax[1].set_ylabel("H (nT)")
 
 ax[1].set_ylim(
@@ -209,8 +211,8 @@ ax[1].set_ylim(
     ],
 )
 ax[1].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[1].xaxis.set_major_formatter(mdates.DateFormatter("%d%H%M"))
-ax[1].xaxis.set_minor_formatter(mdates.DateFormatter("%d%H%M"))
+ax[1].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 # ax[1].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 ax[1].grid(b=True, axis='x', which='Major', color='gray', lw=0.8)
 
@@ -221,7 +223,7 @@ ax[2].plot(
 )
 
 ax[2].set_title("H (Frd)")
-ax[2].set_xlabel("Time")
+ax[2].set_xlabel("Time (DoY:Hr)")
 ax[2].set_ylabel("H (nT)")
 
 ax[2].set_ylim(
@@ -232,8 +234,8 @@ ax[2].set_ylim(
 )
 
 ax[2].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[2].xaxis.set_major_formatter(mdates.DateFormatter("%d%H%M"))
-ax[2].xaxis.set_minor_formatter(mdates.DateFormatter("%d%H%M"))
+ax[2].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 # ax[2].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 ax[2].grid(b=True, axis='x', which='Major', color='gray', lw=0.8)
 

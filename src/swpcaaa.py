@@ -10,6 +10,8 @@ import pandas as pd
 import pathlib as pl
 import datetime as dt
 
+dtgfmt = "%j"
+
 def getAAA():
     """Retirve DST data."""
     r = requests.get(
@@ -98,7 +100,7 @@ ax[0].bar(
 )
 
 ax[0].set_title("Planet (Est)")
-ax[0].set_xlabel("Day of Year")
+ax[0].set_xlabel("Time (DoY)")
 ax[0].set_ylabel("A")
 
 ax[0].set_ylim(
@@ -114,8 +116,8 @@ ax[0].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
 ax[0].grid(b=True, which='Minor', axis='y', color='gray', lw=0.8)
 
 ax[0].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[0].xaxis.set_major_formatter(mdates.DateFormatter("%j"))
-ax[0].xaxis.set_minor_formatter(mdates.DateFormatter("%j"))
+ax[0].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 # ax[0].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
 ax[1].bar(
@@ -134,7 +136,7 @@ ax[1].bar(
 )
 
 ax[1].set_title("Fredericksburg (Est)")
-ax[1].set_xlabel("Day of Year")
+ax[1].set_xlabel("Time (DoY)")
 ax[1].set_ylabel("A")
 
 ax[1].set_ylim(
@@ -150,8 +152,8 @@ ax[1].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
 ax[1].grid(b=True, which='Minor', axis='y', color='gray', lw=0.8)
 
 ax[1].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[1].xaxis.set_major_formatter(mdates.DateFormatter("%j"))
-ax[1].xaxis.set_minor_formatter(mdates.DateFormatter("%j"))
+ax[1].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 # ax[1].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
 ax[1].legend()
@@ -162,7 +164,7 @@ ax[2].bar(
 )
 
 ax[2].set_title("College (Est)")
-ax[2].set_xlabel("Day of Year")
+ax[2].set_xlabel("Time (DoY)")
 ax[2].set_ylabel("A")
 
 ax[2].set_ylim(
@@ -178,8 +180,8 @@ ax[2].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
 ax[2].grid(b=True, which='Minor', axis='y', color='gray', lw=0.8)
 
 ax[2].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[2].xaxis.set_major_formatter(mdates.DateFormatter("%j"))
-ax[2].xaxis.set_minor_formatter(mdates.DateFormatter("%j"))
+ax[2].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 # ax[2].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
 

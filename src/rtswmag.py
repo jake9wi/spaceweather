@@ -3,9 +3,11 @@ import matplotlib
 matplotlib.use('cairo')
 
 import matplotlib.pyplot as plt
-# import matplotlib.dates as mdates
+import matplotlib.dates as mdates
 import requests
 import pandas as pd
+
+dtgfmt = "%j:%H"
 
 url = 'https://services.swpc.noaa.gov/products/solar-wind/mag-1-day.json'
 r = requests.get(url)
@@ -72,11 +74,12 @@ ax[0].scatter(
 )
 
 ax[0].set_title("Vertical Component (bz_gsm)")
-ax[0].set_xlabel("Time")
+ax[0].set_xlabel("Time (DoY:Hr)")
 ax[0].set_ylabel("nano-Teslas")
-ax[0].set_ylim(yrange)
-
+ax[0].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 ax[0].axhline(y=0)
+ax[0].set_ylim(yrange)
 
 # # #
 
@@ -87,9 +90,11 @@ ax[1].scatter(
 )
 
 ax[1].set_title("Field Total")
-ax[1].set_xlabel("Time")
+ax[1].set_xlabel("Time (DoY:Hr)")
 ax[1].set_ylabel("nano-Teslas")
-
+ax[1].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
+ax[1].axhline(y=0)
 ax[1].set_ylim(
     (
         0,
@@ -97,7 +102,7 @@ ax[1].set_ylim(
     ),
 )
 
-ax[1].axhline(y=0)
+
 
 # # #
 

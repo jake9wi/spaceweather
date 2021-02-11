@@ -8,6 +8,8 @@ import matplotlib.dates as mdates
 import requests
 import pandas as pd
 
+dtgfmt = '%j:%H'
+
 url = 'https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json'
 
 r = requests.get(url)
@@ -55,16 +57,18 @@ ax = plt.gca()
 ax.bar(
     data['time_tag'],
     data['Kp_fraction'],
+    lw=0,
+    width=0.075,
 )
 
-ax.set_xlabel("Time")
+ax.set_xlabel("Time (DoY:Hr)")
 ax.set_ylabel("K Index")
 
-ax.set_ylim([0, 9])
+ax.set_ylim([-0.25, 9.25])
 ax.set_yticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
-ax.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
-ax.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))
+ax.xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
+ax.xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 
 ax.grid(b=True, which='Major', color='gray', lw=0.8)
 
