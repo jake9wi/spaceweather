@@ -65,12 +65,13 @@ ax.set_xlabel("Time (DoY:Hr)")
 ax.set_ylabel("K Index")
 
 ax.set_ylim([-0.25, 9.25])
-ax.set_yticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-
+ax.set_yticks([0, 3, 4, 5, 7, 9], minor=False)
+ax.set_yticks([1, 2, 6, 8], minor=True)
+ax.tick_params(axis='both', which='both', length=12)
 ax.xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
 ax.xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
 
-ax.grid(b=True, which='Major', color='gray', lw=0.8)
+ax.grid(b=True, which='both', color='gray', lw=0.6)
 
 fig.savefig('../web/img/kp.svg')
 
