@@ -10,23 +10,6 @@ import pandas as pd
 
 dtgfmt = '%j:%H'
 
-def getXRAYbg():
-    url = 'https://services.swpc.noaa.gov/json/goes/primary/xray-background-7-day.json'
-    r = requests.get(url)
-    r.raise_for_status()
-
-    datecols = [
-        'time_tag',
-    ]
-
-    data = pd.read_json(
-        r.text,
-        convert_dates=datecols,
-    )
-
-    return data.iloc[[4,5]]
-
-
 def getXRAY3d():
     url = 'https://services.swpc.noaa.gov/json/goes/primary/xrays-3-day.json'
     r = requests.get(url)
@@ -46,7 +29,6 @@ def getXRAY3d():
 
 
 xlong, xshort = getXRAY3d()
-xbg = getXRAYbg()
 
 ###
 limmax = 1 * (10**-2)
@@ -80,15 +62,6 @@ ax.plot(
     color='blue',
     zorder=1,
     label="Obsv: SHORT (0.05-0.4nm)"
-)
-
-ax.scatter(
-    xbg['time_tag'],
-    xbg['background'],
-    lw=1,
-    color='yellow',
-    zorder=3,
-    label="Obsv: BACKGROUND"
 )
 
 ax.axhline(y=1e-4, label='Class X', color='purple', lw=1)
