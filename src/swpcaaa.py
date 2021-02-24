@@ -10,6 +10,8 @@ import pandas as pd
 import pathlib as pl
 import datetime as dt
 
+delta = dt.timedelta(days=1)
+
 dtgfmt = "%j"
 
 def getAAA():
@@ -110,6 +112,14 @@ ax[0].set_ylim(
     ],
 )
 
+ax[0].set_xlim(
+    [
+        aaa['dtg'].min() - delta,
+        pred['dtg'].max() + delta,
+    ],
+)
+
+
 ax[0].set_yticks([0, 20, 30, 40, 50, 100], minor=False)
 ax[0].set_yticks([10, 60, 70, 80, 90], minor=True)
 ax[0].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
@@ -146,6 +156,13 @@ ax[1].set_ylim(
     ],
 )
 
+ax[1].set_xlim(
+    [
+        aaa['dtg'].min() - delta,
+        pred['dtg'].max() + delta,
+    ],
+)
+
 ax[1].set_yticks([0, 20, 30, 40, 50, 100], minor=False)
 ax[1].set_yticks([10, 60, 70, 80, 90], minor=True)
 ax[1].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
@@ -171,6 +188,13 @@ ax[2].set_ylim(
     [
         -1,
         101,
+    ],
+)
+
+ax[2].set_xlim(
+    [
+        aaa['dtg'].min() - delta,
+        pred['dtg'].max() + delta,
     ],
 )
 
