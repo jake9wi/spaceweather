@@ -1,61 +1,61 @@
 """Plot the json file containg 10.7cm flux."""
-import matplotlib
-matplotlib.use('cairo')
-
+import pathlib as pl
+import datetime as dt
+import matplotlib; matplotlib.use('cairo')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import requests
 import pandas as pd
-import datetime as dt
+import funcs
 
-dtgfmt = "%j"
+DTG_FMT = "%j"
+
+funcs.check_cwd(pl.Path.cwd())
+
 
 def obsv():
-    robsv = requests.get(
-        'https://services.swpc.noaa.gov/json/f107_cm_flux.json'
-    )
+    """Get and parse observations."""
+    url_obsv = 'https://services.swpc.noaa.gov/json/f107_cm_flux.json'
 
+    robsv = requests.get(url_obsv)
     robsv.raise_for_status()
 
-    datecols = [
-        'time_tag',
-    ]
+    date_cols = ['time_tag']
 
-    obsv = pd.read_json(
+    data = pd.read_json(
         robsv.text,
-        convert_dates=datecols,
+        convert_dates=date_cols,
     )
 
-    return obsv.loc[obsv['reporting_schedule'] == 'Noon']
+    return data.loc[data['reporting_schedule'] == 'Noon']
 
 
 def pred():
-    rpred = requests.get(
-        'https://services.swpc.noaa.gov/json/predicted_f107cm_flux.json'
-    )
+    """Get and parse predictions."""
+    url_pred = 'https://services.swpc.noaa.gov/json/predicted_f107cm_flux.json'
 
+    rpred = requests.get(url_pred)
     rpred.raise_for_status()
 
-    PredRaw = pd.read_json(
-        rpred.text,
-    )
+    pred_raw = pd.read_json(rpred.text)
 
-    PredDict = {
+    pred_dict = {
         'dtg': [
-            PredRaw.iloc[0,0] + dt.timedelta(days=1),
-            PredRaw.iloc[0,0] + dt.timedelta(days=2),
-            PredRaw.iloc[0,0] + dt.timedelta(days=3),
+            pred_raw.iloc[0, 0] + dt.timedelta(days=1),
+            pred_raw.iloc[0, 0] + dt.timedelta(days=2),
+            pred_raw.iloc[0, 0] + dt.timedelta(days=3),
         ],
-        'value':[
-            PredRaw.iloc[0,1],
-            PredRaw.iloc[0,2],
-            PredRaw.iloc[0,3],
+        'value': [
+            pred_raw.iloc[0, 1],
+            pred_raw.iloc[0, 2],
+            pred_raw.iloc[0, 3],
         ],
     }
 
-    pred = pd.DataFrame(PredDict)
+    data = pd.DataFrame(pred_dict)
 
-    return pred
+    return data
+
 
 obsv = obsv()
 pred = pred()
@@ -119,11 +119,11 @@ ax.set_ylim(
     ],
 )
 
-ax.xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
-ax.xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
+ax.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 
 ax.legend()
 
-fig.savefig('../web/img/flux107.svg')
+fig.savefig('./web/img/flux107.svg')
 
 plt.close(1)

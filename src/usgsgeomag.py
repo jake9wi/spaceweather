@@ -1,45 +1,27 @@
 """Plot USGS geomag data."""
-import matplotlib
-matplotlib.use('cairo')
-
+import pathlib as pl
+import datetime as dt
+import matplotlib; matplotlib.use('cairo')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.ticker as mticker
 import requests
 import pandas as pd
-import pathlib as pl
-import datetime as dt
+import funcs
 
-dtgfmt = '%j:%H'
+DTG_FMT = '%j:%H'
 
-deltaT = dt.timedelta(
-    hours=73,
-)
+funcs.check_cwd(pl.Path.cwd())
+
+deltaT = dt.timedelta(hours=73)
 
 now = dt.datetime.utcnow().isoformat(timespec='minutes')
 end = (dt.datetime.utcnow() - deltaT).isoformat(timespec='minutes')
 
 
-def getDST():
+def get_dst():
     """Retirve DST data."""
-    payload = {
-        'id': 'USGS',
-        'elements': 'UX4',
-        'format': 'iaga2002',
-        'sampling_period': '60',
-        'type': 'variation',
-        'endtime': now,
-        'starttime': end,
-    }
-    r = requests.get('https://geomag.usgs.gov/ws/data/', params=payload)
-
-    r.raise_for_status()
-
-    dsttmp = pl.Path("../tmp/dst.txt")
-
-    dsttmp.write_text(r.text)
-
-    wd = [
+    col_width = [
         (0, 23),
         (24, 27),
         (32, 40),
@@ -51,21 +33,51 @@ def getDST():
         'dst',
     ]
 
+    payload = {
+        'id': 'USGS',
+        'elements': 'UX4',
+        'format': 'iaga2002',
+        'sampling_period': '60',
+        'type': 'variation',
+        'endtime': now,
+        'starttime': end,
+    }
+
+    url = 'https://geomag.usgs.gov/ws/data/'
+
+    r = requests.get(url, params=payload)
+    r.raise_for_status()
+
+    tmp = pl.Path('./src/aaa.tmp')
+    tmp.write_text(r.text)
+
     data = pd.read_fwf(
-        "../tmp/dst.txt",
-        colspecs=wd,
+        tmp,
+        colspecs=col_width,
         header=None,
         names=colnames,
         skiprows=21,
         na_values='99999.00',
         parse_dates=[0],
     )
-
+    tmp.unlink()
     return data
 
 
-def getBOU():
+def get_bou():
     """Retrive H data for Boulder."""
+    col_width = [
+        (0, 23),
+        (24, 27),
+        (32, 40),
+    ]
+
+    colnames = [
+        'dtg',
+        'doy',
+        'H',
+    ]
+
     payload = {
         'id': 'BOU',
         'elements': 'H',
@@ -75,15 +87,29 @@ def getBOU():
         'endtime': now,
         'starttime': end,
     }
-    r = requests.get('https://geomag.usgs.gov/ws/data/', params=payload)
 
+    r = requests.get('https://geomag.usgs.gov/ws/data/', params=payload)
     r.raise_for_status()
 
-    boutmp = pl.Path("../tmp/bou.txt")
+    tmp = pl.Path('./src/aaa.tmp')
+    tmp.write_text(r.text)
 
-    boutmp.write_text(r.text)
+    data = pd.read_fwf(
+        tmp,
+        colspecs=col_width,
+        header=None,
+        names=colnames,
+        skiprows=21,
+        na_values='99999.00',
+        parse_dates=[0],
+    )
+    tmp.unlink()
+    return data
 
-    wd = [
+
+def get_frd():
+    """Retrive H data for Fredricksburg."""
+    col_width = [
         (0, 23),
         (24, 27),
         (32, 40),
@@ -95,21 +121,6 @@ def getBOU():
         'H',
     ]
 
-    data = pd.read_fwf(
-        "../tmp/bou.txt",
-        colspecs=wd,
-        header=None,
-        names=colnames,
-        skiprows=21,
-        na_values='99999.00',
-        parse_dates=[0],
-    )
-
-    return data
-
-
-def getFRD():
-    """Retrive H data for Fredricksburg."""
     payload = {
         'id': 'FRD',
         'elements': 'H',
@@ -119,42 +130,29 @@ def getFRD():
         'endtime': now,
         'starttime': end,
     }
-    r = requests.get('https://geomag.usgs.gov/ws/data/', params=payload)
 
+    r = requests.get('https://geomag.usgs.gov/ws/data/', params=payload)
     r.raise_for_status()
 
-    frdtmp = pl.Path("../tmp/frd.txt")
-
-    frdtmp.write_text(r.text)
-
-    wd = [
-        (0, 23),
-        (24, 27),
-        (32, 40),
-    ]
-
-    colnames = [
-        'dtg',
-        'doy',
-        'H',
-    ]
+    tmp = pl.Path('./src/aaa.tmp')
+    tmp.write_text(r.text)
 
     data = pd.read_fwf(
-        "../tmp/frd.txt",
-        colspecs=wd,
+        tmp,
+        colspecs=col_width,
         header=None,
         names=colnames,
         skiprows=21,
         na_values='99999.00',
         parse_dates=[0],
     )
-
+    tmp.unlink()
     return data
 
 
-dst = getDST()
-bou = getBOU()
-frd = getFRD()
+dst = get_dst()
+bou = get_bou()
+frd = get_frd()
 
 ###
 
@@ -189,8 +187,8 @@ ax[0].set_ylim(
     ],
 )
 ax[0].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.2f'))
-ax[0].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
-ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
+ax[0].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 # ax[0].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 ax[0].grid(b=True, axis='x', which='Major', color='gray', lw=0.8)
 
@@ -211,8 +209,8 @@ ax[1].set_ylim(
     ],
 )
 ax[1].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[1].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
-ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
+ax[1].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 # ax[1].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 ax[1].grid(b=True, axis='x', which='Major', color='gray', lw=0.8)
 
@@ -234,11 +232,11 @@ ax[2].set_ylim(
 )
 
 ax[2].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[2].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
-ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
+ax[2].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 # ax[2].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 ax[2].grid(b=True, axis='x', which='Major', color='gray', lw=0.8)
 
-fig.savefig('../web/img/usgsmag.svg')
+fig.savefig('./web/img/usgsmag.svg')
 
 plt.close(1)

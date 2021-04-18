@@ -1,32 +1,25 @@
 """Plot USGS geomag data."""
-import matplotlib
-matplotlib.use('cairo')
-
+import tempfile
+import pathlib as pl
+import datetime as dt
+import matplotlib; matplotlib.use('cairo')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.ticker as mticker
 import requests
 import pandas as pd
-import pathlib as pl
-import datetime as dt
+import funcs
 
 delta = dt.timedelta(days=1)
 
-dtgfmt = "%j"
+DTG_FMT = "%j"
 
-def getAAA():
+funcs.check_cwd(pl.Path.cwd())
+
+
+def get_aaa():
     """Retirve DST data."""
-    r = requests.get(
-        'https://services.swpc.noaa.gov/text/daily-geomagnetic-indices.txt'
-    )
-
-    r.raise_for_status()
-
-    dgdtmp = pl.Path("../tmp/dgd.txt")
-
-    dgdtmp.write_text(r.text)
-
-    wd = [
+    col_width = [
         (0, 10),
         (14, 16),
         (37, 39),
@@ -40,40 +33,46 @@ def getAAA():
         'A Planet',
     ]
 
+    url_aaa = 'https://services.swpc.noaa.gov/text/daily-geomagnetic-indices.txt'
+
+    r = requests.get(url_aaa)
+    r.raise_for_status()
+
+    tmp = pl.Path('./src/aaa.tmp')
+    tmp.write_text(r.text)
+
     data = pd.read_fwf(
-        "../tmp/dgd.txt",
-        colspecs=wd,
+        tmp,
+        colspecs=col_width,
         header=None,
         names=colnames,
         skiprows=13,
         na_values='-1',
         parse_dates=[0],
     )
-
+    tmp.unlink()
     return data
 
-def getPRED():
-    """Retirve DST data."""
-    r = requests.get(
-        'https://services.swpc.noaa.gov/json/predicted_fredericksburg_a_index.json'
-    )
 
+def get_pred():
+    """Retirve DST data."""
+    url_pred = 'https://services.swpc.noaa.gov/json/predicted_fredericksburg_a_index.json'
+
+    r = requests.get(url_pred)
     r.raise_for_status()
 
-    raw = pd.read_json(
-        r.text
-    )
+    raw = pd.read_json(r.text)
 
     predict = {
         'dtg': [
-            raw.iloc[0,0] + dt.timedelta(days=1),
-            raw.iloc[0,0] + dt.timedelta(days=2),
-            raw.iloc[0,0] + dt.timedelta(days=3),
+            raw.iloc[0, 0] + dt.timedelta(days=1),
+            raw.iloc[0, 0] + dt.timedelta(days=2),
+            raw.iloc[0, 0] + dt.timedelta(days=3),
         ],
-        'value':[
-            raw.iloc[0,1],
-            raw.iloc[0,2],
-            raw.iloc[0,3],
+        'value': [
+            raw.iloc[0, 1],
+            raw.iloc[0, 2],
+            raw.iloc[0, 3],
         ],
     }
 
@@ -82,8 +81,8 @@ def getPRED():
     return data
 
 
-aaa = getAAA()
-pred = getPRED()
+aaa = get_aaa()
+pred = get_pred()
 
 ###
 
@@ -126,8 +125,8 @@ ax[0].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
 ax[0].grid(b=True, which='Minor', axis='y', color='gray', lw=0.8)
 ax[0].tick_params(axis='both', which='both', length=12)
 ax[0].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[0].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
-ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
+ax[0].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 # ax[0].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
 ax[1].bar(
@@ -169,8 +168,8 @@ ax[1].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
 ax[1].grid(b=True, which='Minor', axis='y', color='gray', lw=0.8)
 ax[1].tick_params(axis='both', which='both', length=12)
 ax[1].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[1].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
-ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
+ax[1].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 # ax[1].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
 ax[1].legend()
@@ -204,11 +203,11 @@ ax[2].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
 ax[2].grid(b=True, which='Minor', axis='y', color='gray', lw=0.8)
 ax[2].tick_params(axis='both', which='both', length=12)
 ax[2].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[2].xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
-ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
+ax[2].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 # ax[2].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
 
-fig.savefig('../web/img/swpcaaa.svg')
+fig.savefig('./web/img/swpcaaa.svg')
 
 plt.close(1)

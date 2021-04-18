@@ -10,9 +10,9 @@ if (($daily -eq $false) -and ($fast -eq $false)) {
 Push-Location -path $PSScriptRoot
 
 $dirstruct = @(
-    '..\..\spaceweather\web\html\',
-    '..\..\spaceweather\web\img\',
-    '..\..\spaceweather\src\'
+    '..\spaceweather\web\html\',
+    '..\spaceweather\web\img\',
+    '..\spaceweather\src\'
 )
 
 if (($dirstruct | Test-Path) -contains $false) {
@@ -39,13 +39,13 @@ if (Get-Command -Name 'python.exe' -ErrorAction SilentlyContinue) {
     throw 'CAN NOT FIND "python.exe".'
 }
 
-$xray = '.\goesxray.py'
-$swpcaaa = '.\swpcaaa.py'
-$usgsmag = '.\usgsgeomag.py'
-${flux107} = '.\flux107.py'
-$planetk = '.\planetk.py'
-$rtswmag = '.\rtswmag.py'
-$rtswplasma = '.\rtswplasma.py'
+$xray = '.\src\goesxray.py'
+$swpcaaa = '.\src\swpcaaa.py'
+$usgsmag = '.\src\usgsgeomag.py'
+${flux107} = '.\src\flux107.py'
+$planetk = '.\src\planetk.py'
+$rtswmag = '.\src\rtswmag.py'
+$rtswplasma = '.\src\rtswplasma.py'
 
 if ($daily -eq $true) {
     Start-Process `

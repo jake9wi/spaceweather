@@ -1,38 +1,44 @@
 """Plot Kp index."""
-import matplotlib
-matplotlib.use('cairo')
-
+import pathlib as pl
+import matplotlib; matplotlib.use('cairo')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-
 import requests
 import pandas as pd
+import funcs
 
-dtgfmt = '%j:%H'
+DTG_FMT = '%j:%H'
+LIM_MAX = 1 * (10**-2)
+LIM_MIN = 1 * (10**-9)
 
-def getXRAY3d():
+funcs.check_cwd(pl.Path.cwd())
+
+
+def get_xray_3d():
+    """Get and parse xrays."""
     url = 'https://services.swpc.noaa.gov/json/goes/primary/xrays-3-day.json'
-    r = requests.get(url)
+    r = requests.get(url, timeout=6)
     r.raise_for_status()
 
-    datecols = [
-        'time_tag',
-    ]
+    date_cols = ['time_tag']
 
     data = pd.read_json(
         r.text,
-        convert_dates=datecols,
+        convert_dates=date_cols,
     )
 
-    # long, short
-    return data.loc[data['energy'] == '0.1-0.8nm'], data.loc[data['energy'] == '0.05-0.4nm']
+    xrays_long = data.loc[data['energy'] == '0.1-0.8nm']
+
+    xrays_short = data.loc[data['energy'] == '0.05-0.4nm']
+
+    if (len(xrays_long) == 0) or (len(xrays_short) == 0):
+        raise Exception("NO ROWS IN TABLES.")
+
+    return xrays_long, xrays_short
 
 
-xlong, xshort = getXRAY3d()
+xlong, xshort = get_xray_3d()
 
-###
-limmax = 1 * (10**-2)
-limmin = 1 * (10**-9)
 ###
 
 plt.style.use('dark_background')
@@ -72,14 +78,14 @@ ax.axhline(y=1e-7, label='Class B', color='green', lw=1)
 ax.set_xlabel("Time (DoY:Hr)")
 ax.set_ylabel("Watts per Square Metre")
 
-ax.set_ylim([limmin, limmax])
+ax.set_ylim([LIM_MIN, LIM_MAX])
 ax.set_yscale('log')
 ax.tick_params(axis='both', which='both', length=9, labelsize=12)
-ax.xaxis.set_major_formatter(mdates.DateFormatter(dtgfmt))
-ax.xaxis.set_minor_formatter(mdates.DateFormatter(dtgfmt))
+ax.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 
 ax.grid(b=True, which='both', color='gray', lw=0.6)
 ax.legend(loc='upper left')
-fig.savefig('../web/img/xray.svg')
+fig.savefig('./web/img/xray.svg')
 
 plt.close(1)
