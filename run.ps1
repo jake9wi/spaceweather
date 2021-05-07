@@ -1,10 +1,18 @@
 param (
     [switch]$daily = $false,
-    [switch]$fast = $false
+    [switch]$fast = $false,
+    [switch]$seven = $false,
+    [switch]$three = $false
 )
 
+if (($sevem -eq $false) -and ($three -eq $false)) {
+    throw 'Three or seven must be set'
+} elseif (($sevem -eq $true) -and ($three -eq $true)) {
+    throw 'Three or seven must be set'
+}
+
 if (($daily -eq $false) -and ($fast -eq $false)) {
-    throw 'at least one of daily or fast must be set'
+    throw 'At least one of daily or fast must be set'
 }
 
 Push-Location -path $PSScriptRoot
@@ -62,11 +70,19 @@ if ($daily -eq $true) {
 }
 
 if ($fast -eq $true) {
-    Start-Process `
-      -FilePath 'python.exe' `
-      -ArgumentList  $xray `
-      -NoNewWindow `
-      -Wait
+    if ($three -eq $true) {
+        Start-Process `
+          -FilePath 'python.exe' `
+          -ArgumentList  @($xray, '--three')`
+          -NoNewWindow `
+          -Wait
+    } else {
+        Start-Process `
+          -FilePath 'python.exe' `
+          -ArgumentList  @($xray, '--seven')`
+          -NoNewWindow `
+          -Wait
+    }
 
     Start-Process `
       -FilePath 'python.exe' `

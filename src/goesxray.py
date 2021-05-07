@@ -1,4 +1,5 @@
 """Plot Kp index."""
+import argparse
 import pathlib as pl
 import matplotlib; matplotlib.use('cairo')
 import matplotlib.pyplot as plt
@@ -14,9 +15,40 @@ LIM_MIN = 1 * (10**-9)
 funcs.check_cwd(pl.Path.cwd())
 
 
-def get_xray_3d():
+parser = argparse.ArgumentParser()
+
+group = parser.add_mutually_exclusive_group()
+
+group.add_argument("--three", action='store_true',
+                   help="Make three day graph.",
+                   )
+
+group.add_argument("--seven", action='store_true',
+                   help="Make seven day graph.",
+                   )
+
+args = parser.parse_args()
+
+if args.three:
+    time_span = 3
+elif args.seven:
+    time_span = 7
+else:
+    raise Exception('Option three or seven must be present.')
+
+
+def get_xray(time_span: int):
     """Get and parse xrays."""
-    url = 'https://services.swpc.noaa.gov/json/goes/primary/xrays-3-day.json'
+    if time_span == 3:
+        url = 'https://services.swpc.noaa.gov/json/goes/primary/xrays-3-day.json'
+    elif time_span == 7:
+        url = 'https://services.swpc.noaa.gov/json/goes/primary/xrays-7-day.json'
+    else:
+        raise ValueError((
+            f'Received: time_span {time_span}. '
+            'time_span must be 3 or 7.'
+        ))
+
     r = requests.get(url, timeout=6)
     r.raise_for_status()
 
@@ -37,7 +69,7 @@ def get_xray_3d():
     return xrays_long, xrays_short
 
 
-xlong, xshort = get_xray_3d()
+xlong, xshort = get_xray(time_span)
 
 ###
 
