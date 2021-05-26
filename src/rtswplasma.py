@@ -47,7 +47,7 @@ rtsw_plasma = get_rtsw_plasma()
 
 # # #
 
-plt.style.use('dark_background')
+plt.style.use(r'./src/my_style')
 
 fig, ax = plt.subplots(
     3, 1,
@@ -104,7 +104,3 @@ ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 fig.savefig('./web/img/rtsw-plasma.svg')
 
 plt.close(1)
-
-# axes.set_yticks([0,1,2,3,4,5,6,7,8,9])
-# axes.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
-# axes.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))

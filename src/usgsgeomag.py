@@ -156,7 +156,7 @@ frd = get_frd()
 
 ###
 
-plt.style.use('dark_background')
+plt.style.use(r'./src/my_style')
 
 fig, ax = plt.subplots(
     3, 1,
@@ -189,8 +189,7 @@ ax[0].set_ylim(
 ax[0].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.2f'))
 ax[0].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
 ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
-# ax[0].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
-ax[0].grid(b=True, axis='x', which='Major', color='gray', lw=0.8)
+ax[0].grid(b=True, axis='x', which='Major', lw=0.8)
 
 ax[1].plot(
     bou['dtg'],
@@ -212,7 +211,7 @@ ax[1].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
 ax[1].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
 ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 # ax[1].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
-ax[1].grid(b=True, axis='x', which='Major', color='gray', lw=0.8)
+ax[1].grid(b=True, axis='x', which='Major', lw=0.8)
 
 ax[2].plot(
     frd['dtg'],
@@ -235,7 +234,7 @@ ax[2].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
 ax[2].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
 ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 # ax[2].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
-ax[2].grid(b=True, axis='x', which='Major', color='gray', lw=0.8)
+ax[2].grid(b=True, axis='x', which='Major', lw=0.8)
 
 fig.savefig('./web/img/usgsmag.svg')
 

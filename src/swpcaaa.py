@@ -86,7 +86,7 @@ pred = get_pred()
 
 ###
 
-plt.style.use('dark_background')
+plt.style.use(r'./src/my_style')
 
 fig, ax = plt.subplots(
     3, 1,
@@ -122,12 +122,11 @@ ax[0].set_xlim(
 ax[0].set_yticks([0, 20, 30, 40, 50, 100], minor=False)
 ax[0].set_yticks([10, 60, 70, 80, 90], minor=True)
 ax[0].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
-ax[0].grid(b=True, which='Minor', axis='y', color='gray', lw=0.8)
+ax[0].grid(b=True, which='Minor', axis='y', lw=0.8)
 ax[0].tick_params(axis='both', which='both', length=12)
 ax[0].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
 ax[0].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
 ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
-# ax[0].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
 ax[1].bar(
     pred['dtg'],
@@ -165,7 +164,7 @@ ax[1].set_xlim(
 ax[1].set_yticks([0, 20, 30, 40, 50, 100], minor=False)
 ax[1].set_yticks([10, 60, 70, 80, 90], minor=True)
 ax[1].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
-ax[1].grid(b=True, which='Minor', axis='y', color='gray', lw=0.8)
+ax[1].grid(b=True, which='Minor', axis='y', lw=0.8)
 ax[1].tick_params(axis='both', which='both', length=12)
 ax[1].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
 ax[1].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
@@ -200,7 +199,7 @@ ax[2].set_xlim(
 ax[2].set_yticks([0, 20, 30, 40, 50, 100], minor=False)
 ax[2].set_yticks([10, 60, 70, 80, 90], minor=True)
 ax[2].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
-ax[2].grid(b=True, which='Minor', axis='y', color='gray', lw=0.8)
+ax[2].grid(b=True, which='Minor', axis='y', lw=0.8)
 ax[2].tick_params(axis='both', which='both', length=12)
 ax[2].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
 ax[2].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))

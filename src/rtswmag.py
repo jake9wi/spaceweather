@@ -58,7 +58,7 @@ yrange = [(ylimit + 0.5) * -1, ylimit + 0.5]
 
 # # #
 
-plt.style.use('dark_background')
+plt.style.use(r'./src/my_style')
 
 fig, ax = plt.subplots(
     2, 1,
@@ -111,7 +111,3 @@ ax[1].set_ylim(
 fig.savefig('./web/img/rtsw-mag.svg')
 
 plt.close(1)
-
-# axes.set_yticks([0,1,2,3,4,5,6,7,8,9])
-# axes.xaxis.set_major_formatter(mdates.DateFormatter("%b-%d"))
-# axes.xaxis.set_minor_formatter(mdates.DateFormatter("%b-%d"))

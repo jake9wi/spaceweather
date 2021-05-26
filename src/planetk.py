@@ -46,7 +46,7 @@ kp = get_kp()
 
 ###
 
-plt.style.use('dark_background')
+plt.style.use(r'./src/my_style')
 
 fig = plt.figure(
     1,
@@ -74,7 +74,7 @@ ax.tick_params(axis='both', which='both', length=12)
 ax.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
 ax.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 
-ax.grid(b=True, which='both', color='gray', lw=0.6)
+ax.grid(b=True, which='both', lw=0.6)
 
 fig.savefig('./web/img/kp.svg')
 
