@@ -27,7 +27,7 @@ if (($dirstruct | Test-Path) -contains $false) {
     throw 'Bad dir structure'
 }
 
-if (Get-Command -Name 'python.exe' -ErrorAction SilentlyContinue) {
+if (Get-Command -Name 'python.exe') {
     Start-Process `
       -FilePath 'python.exe' `
       -ArgumentList '--version' `
@@ -41,7 +41,7 @@ if (Get-Command -Name 'python.exe' -ErrorAction SilentlyContinue) {
     } else {
 	Remove-Item -Path 'vercheck'
     }
-    
+
 } else {
     Remove-Item -Path 'vercheck'
     throw 'CAN NOT FIND "python.exe".'
@@ -58,13 +58,13 @@ $rtswplasma = '.\src\rtswplasma.py'
 if ($daily -eq $true) {
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList  ${flux107} `
+      -ArgumentList  @('-OO', ${flux107}) `
       -NoNewWindow `
       -Wait
 
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList  $swpcaaa `
+      -ArgumentList  @('-OO', $swpcaaa) `
       -NoNewWindow `
       -Wait
 }
@@ -73,38 +73,38 @@ if ($fast -eq $true) {
     if ($three -eq $true) {
         Start-Process `
           -FilePath 'python.exe' `
-          -ArgumentList  @($xray, '--three')`
+          -ArgumentList  @('-OO', $xray, '--three')`
           -NoNewWindow `
           -Wait
     } else {
         Start-Process `
           -FilePath 'python.exe' `
-          -ArgumentList  @($xray, '--seven')`
+          -ArgumentList  @('-OO', $xray, '--seven')`
           -NoNewWindow `
           -Wait
     }
 
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList  $usgsmag `
+      -ArgumentList  @('-OO', $usgsmag) `
       -NoNewWindow `
       -Wait
 
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList  $planetk `
+      -ArgumentList  @('-OO', $planetk) `
       -NoNewWindow `
       -Wait
 
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList $rtswmag `
+      -ArgumentList @('-OO', $rtswmag) `
       -NoNewWindow  `
       -Wait
 
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList $rtswplasma `
+      -ArgumentList @('-OO', $rtswplasma) `
       -NoNewWindow `
       -Wait
 }
