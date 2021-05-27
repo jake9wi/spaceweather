@@ -52,8 +52,7 @@ $swpcaaa = '.\src\swpcaaa.py'
 $usgsmag = '.\src\usgsgeomag.py'
 ${flux107} = '.\src\flux107.py'
 $planetk = '.\src\planetk.py'
-$rtswmag = '.\src\rtswmag.py'
-$rtswplasma = '.\src\rtswplasma.py'
+$rtsw = '.\src\rtsw.py'
 
 if ($daily -eq $true) {
     Start-Process `
@@ -98,14 +97,8 @@ if ($fast -eq $true) {
 
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList @('-OO', $rtswmag) `
+      -ArgumentList @('-OO', $rtsw) `
       -NoNewWindow  `
-      -Wait
-
-    Start-Process `
-      -FilePath 'python.exe' `
-      -ArgumentList @('-OO', $rtswplasma) `
-      -NoNewWindow `
       -Wait
 }
 
