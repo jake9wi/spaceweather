@@ -158,83 +158,95 @@ frd = get_frd()
 
 plt.style.use(r'./src/my_style')
 
-fig, ax = plt.subplots(
-    3, 1,
-    figsize=(10, 30),
+fig = plt.figure(
+    num=1,
+    figsize=(10, 20),
+    tight_layout=False,
+    constrained_layout=True,
 )
 
 fig.suptitle("USGS Mag")
 
-ax[0].plot(
+ax0 = plt.subplot2grid((2, 2), (0, 0), rowspan=1, colspan=2)
+ax1 = plt.subplot2grid((2, 2), (1, 0), rowspan=1, colspan=1)
+ax2 = plt.subplot2grid((2, 2), (1, 1), rowspan=1, colspan=1)
+
+ax0.plot(
     dst['dtg'],
     dst['dst'],
     lw=0.8,
 )
-ax[0].axhline(y=0)
-ax[0].set_title("DST")
-ax[0].set_xlabel("Time (DoY:Hr)")
-ax[0].set_ylabel("DST (nT)")
+ax0.axhline(y=0)
+ax0.set_title("DST")
+ax0.set_xlabel("Time (DoY:Hr)")
+ax0.set_ylabel("DST (nT)")
 
 if dst['dst'].max() <= 0:
     dstmax = 10
 else:
     dstmax = dst['dst'].max() + 1
 
-ax[0].set_ylim(
+ax0.set_ylim(
     [
         dst['dst'].min() - 1,
         dstmax,
     ],
 )
-ax[0].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.2f'))
-ax[0].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
-ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
-ax[0].grid(b=True, axis='x', which='Major', lw=0.8)
+ax0.yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.2f'))
+ax0.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax0.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
+ax0.grid(b=True, axis='x', which='Major', lw=0.8)
 
-ax[1].plot(
+ax1.scatter(
     bou['dtg'],
     bou['H'],
-    lw=0.8,
+    s=2,
 )
 
-ax[1].set_title("H (Bou)")
-ax[1].set_xlabel("Time (DoY:Hr)")
-ax[1].set_ylabel("H (nT)")
+ax1.set_title("H (Bou)")
+ax1.set_xlabel("Time (DoY:Hr)")
+ax1.set_ylabel("H (nT)")
 
-ax[1].set_ylim(
+ax1.set_ylim(
     [
         bou['H'].min() - 1,
         bou['H'].max() + 1,
     ],
 )
-ax[1].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[1].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
-ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
-# ax[1].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
-ax[1].grid(b=True, axis='x', which='Major', lw=0.8)
+ax1.yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
+ax1.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax1.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
+# ax1.xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
+ax1.grid(b=True, axis='x', which='Major', lw=0.8)
 
-ax[2].plot(
+for label in ax1.xaxis.get_ticklabels():
+    label.set_rotation(45)
+
+ax2.scatter(
     frd['dtg'],
     frd['H'],
-    lw=0.8,
+    s=2,
 )
 
-ax[2].set_title("H (Frd)")
-ax[2].set_xlabel("Time (DoY:Hr)")
-ax[2].set_ylabel("H (nT)")
+ax2.set_title("H (Frd)")
+ax2.set_xlabel("Time (DoY:Hr)")
+ax2.set_ylabel("H (nT)")
 
-ax[2].set_ylim(
+ax2.set_ylim(
     [
         frd['H'].min() - 1,
         frd['H'].max() + 1,
     ],
 )
 
-ax[2].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[2].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
-ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
-# ax[2].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
-ax[2].grid(b=True, axis='x', which='Major', lw=0.8)
+ax2.yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
+ax2.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax2.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
+# ax2.xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
+ax2.grid(b=True, axis='x', which='Major', lw=0.8)
+
+for label in ax2.xaxis.get_ticklabels():
+    label.set_rotation(45)
 
 fig.savefig('./web/img/usgsmag.svg')
 

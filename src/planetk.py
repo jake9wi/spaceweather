@@ -49,8 +49,10 @@ kp = get_kp()
 plt.style.use(r'./src/my_style')
 
 fig = plt.figure(
-    1,
+    num=1,
     figsize=(10, 10),
+    tight_layout=False,
+    constrained_layout=True,
 )
 
 fig.suptitle("Plantary K Index")

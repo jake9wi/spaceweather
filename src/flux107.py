@@ -84,9 +84,11 @@ def plot(obsv, pred):
     plt.style.use(r'./src/my_style')
 
     fig = plt.figure(
-        1,
-        figsize=(10, 10),
-    )
+    num=1,
+    figsize=(10, 10),
+    tight_layout=False,
+    constrained_layout=True,
+)
 
     fig.suptitle("10.7 centimetre Flux\nSamp Rate: 3x (midday)")
 

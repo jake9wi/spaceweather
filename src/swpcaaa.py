@@ -88,30 +88,36 @@ pred = get_pred()
 
 plt.style.use(r'./src/my_style')
 
-fig, ax = plt.subplots(
-    3, 1,
-    figsize=(10, 30),
+fig = plt.figure(
+    num=1,
+    figsize=(10, 20),
+    tight_layout=False,
+    constrained_layout=True,
 )
 
 fig.suptitle("SWPC A Index")
 
-ax[0].bar(
+ax0 = plt.subplot2grid((3, 1), (0, 0), rowspan=1, colspan=1)
+ax1 = plt.subplot2grid((3, 1), (1, 0), rowspan=1, colspan=1)
+ax2 = plt.subplot2grid((3, 1), (2, 0), rowspan=1, colspan=1)
+
+ax0.bar(
     aaa['dtg'],
     aaa['A Planet'],
 )
 
-ax[0].set_title("Planet (Est)")
-ax[0].set_xlabel("Time (DoY)")
-ax[0].set_ylabel("A")
+ax0.set_title("Planet (Est)")
+ax0.set_xlabel("Time (DoY)")
+ax0.set_ylabel("A")
 
-ax[0].set_ylim(
+ax0.set_ylim(
     [
         -1,
         101,
     ],
 )
 
-ax[0].set_xlim(
+ax0.set_xlim(
     [
         aaa['dtg'].min() - delta,
         pred['dtg'].max() + delta,
@@ -119,16 +125,16 @@ ax[0].set_xlim(
 )
 
 
-ax[0].set_yticks([0, 20, 30, 40, 50, 100], minor=False)
-ax[0].set_yticks([10, 60, 70, 80, 90], minor=True)
-ax[0].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
-ax[0].grid(b=True, which='Minor', axis='y', lw=0.8)
-ax[0].tick_params(axis='both', which='both', length=12)
-ax[0].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[0].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
-ax[0].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
+ax0.set_yticks([0, 20, 30, 40, 50, 100], minor=False)
+ax0.set_yticks([10, 60, 70, 80, 90], minor=True)
+ax0.grid(b=True, which='Major', axis='y', color='red', lw=0.8)
+ax0.grid(b=True, which='Minor', axis='y', lw=0.8)
+ax0.tick_params(axis='both', which='both', length=12)
+ax0.yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
+ax0.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax0.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 
-ax[1].bar(
+ax1.bar(
     pred['dtg'],
     pred['value'],
     zorder=1,
@@ -136,75 +142,75 @@ ax[1].bar(
     label='Prediction',
 )
 
-ax[1].bar(
+ax1.bar(
     aaa['dtg'],
     aaa['A Fred'],
     zorder=2,
     label='Observation',
 )
 
-ax[1].set_title("Fredericksburg (Est)")
-ax[1].set_xlabel("Time (DoY)")
-ax[1].set_ylabel("A")
+ax1.set_title("Fredericksburg (Est)")
+ax1.set_xlabel("Time (DoY)")
+ax1.set_ylabel("A")
 
-ax[1].set_ylim(
+ax1.set_ylim(
     [
         -1,
         101,
     ],
 )
 
-ax[1].set_xlim(
+ax1.set_xlim(
     [
         aaa['dtg'].min() - delta,
         pred['dtg'].max() + delta,
     ],
 )
 
-ax[1].set_yticks([0, 20, 30, 40, 50, 100], minor=False)
-ax[1].set_yticks([10, 60, 70, 80, 90], minor=True)
-ax[1].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
-ax[1].grid(b=True, which='Minor', axis='y', lw=0.8)
-ax[1].tick_params(axis='both', which='both', length=12)
-ax[1].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[1].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
-ax[1].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
-# ax[1].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
+ax1.set_yticks([0, 20, 30, 40, 50, 100], minor=False)
+ax1.set_yticks([10, 60, 70, 80, 90], minor=True)
+ax1.grid(b=True, which='Major', axis='y', color='red', lw=0.8)
+ax1.grid(b=True, which='Minor', axis='y', lw=0.8)
+ax1.tick_params(axis='both', which='both', length=12)
+ax1.yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
+ax1.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax1.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
+# ax1.xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
-ax[1].legend()
+ax1.legend()
 
-ax[2].bar(
+ax2.bar(
     aaa['dtg'],
     aaa['A Coll'],
 )
 
-ax[2].set_title("College (Est)")
-ax[2].set_xlabel("Time (DoY)")
-ax[2].set_ylabel("A")
+ax2.set_title("College (Est)")
+ax2.set_xlabel("Time (DoY)")
+ax2.set_ylabel("A")
 
-ax[2].set_ylim(
+ax2.set_ylim(
     [
         -1,
         101,
     ],
 )
 
-ax[2].set_xlim(
+ax2.set_xlim(
     [
         aaa['dtg'].min() - delta,
         pred['dtg'].max() + delta,
     ],
 )
 
-ax[2].set_yticks([0, 20, 30, 40, 50, 100], minor=False)
-ax[2].set_yticks([10, 60, 70, 80, 90], minor=True)
-ax[2].grid(b=True, which='Major', axis='y', color='red', lw=0.8)
-ax[2].grid(b=True, which='Minor', axis='y', lw=0.8)
-ax[2].tick_params(axis='both', which='both', length=12)
-ax[2].yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
-ax[2].xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
-ax[2].xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
-# ax[2].xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
+ax2.set_yticks([0, 20, 30, 40, 50, 100], minor=False)
+ax2.set_yticks([10, 60, 70, 80, 90], minor=True)
+ax2.grid(b=True, which='Major', axis='y', color='red', lw=0.8)
+ax2.grid(b=True, which='Minor', axis='y', lw=0.8)
+ax2.tick_params(axis='both', which='both', length=12)
+ax2.yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
+ax2.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax2.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
+# ax2.xaxis.set_major_locator(mdates.WeekdayLocator(interval=10))
 
 
 fig.savefig('./web/img/swpcaaa.svg')

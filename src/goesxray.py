@@ -76,9 +76,10 @@ xlong, xshort = get_xray(time_span)
 plt.style.use(r'./src/my_style')
 
 fig = plt.figure(
-    1,
+    num=1,
     figsize=(10, 20),
-    # facecolor="0.2",
+    tight_layout=False,
+    constrained_layout=True,
 )
 
 fig.suptitle("GOES X-Ray Flux")
