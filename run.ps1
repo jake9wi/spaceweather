@@ -1,8 +1,11 @@
 param (
     [switch]$daily = $false,
     [switch]$fast = $false,
-    [switch]$seven = $false,
-    [switch]$three = $false
+    [switch]$xrayseven = $false,
+    [switch]$xraythree = $false,
+    [switch]$usgsthree = $false,
+    [switch]$usgstwo = $false,
+    [switch]$usgsone = $false
 )
 
 if (($sevem -eq $false) -and ($three -eq $false)) {
@@ -69,7 +72,7 @@ if ($daily -eq $true) {
 }
 
 if ($fast -eq $true) {
-    if ($three -eq $true) {
+    if ($xraythree -eq $true) {
         Start-Process `
           -FilePath 'python.exe' `
           -ArgumentList  @('-OO', $xray, '--three')`
@@ -82,12 +85,26 @@ if ($fast -eq $true) {
           -NoNewWindow `
           -Wait
     }
-
+    if ($usgsthree -eq $true) {
     Start-Process `
       -FilePath 'python.exe' `
-      -ArgumentList  @('-OO', $usgsmag) `
+      -ArgumentList  @('-OO', $usgsmag, '--three') `
       -NoNewWindow `
       -Wait
+    } elseif ($usgstwo -eq $true) {
+        Start-Process `
+          -FilePath 'python.exe' `
+          -ArgumentList  @('-OO', $usgsmag, '--two') `
+          -NoNewWindow `
+          -Wait
+    }
+    else {
+        Start-Process `
+          -FilePath 'python.exe' `
+          -ArgumentList  @('-OO', $usgsmag, '--one') `
+          -NoNewWindow `
+          -Wait
+    }
 
     Start-Process `
       -FilePath 'python.exe' `

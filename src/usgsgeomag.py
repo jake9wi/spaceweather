@@ -1,4 +1,5 @@
 """Plot USGS geomag data."""
+import argparse
 import pathlib as pl
 import datetime as dt
 import matplotlib; matplotlib.use('cairo')
@@ -9,11 +10,36 @@ import requests
 import pandas as pd
 import funcs
 
-DTG_FMT = '%j:%H'
-
 funcs.check_cwd(pl.Path.cwd())
 
-deltaT = dt.timedelta(hours=73)
+DTG_FMT = '%j:%H'
+
+parser = argparse.ArgumentParser()
+
+group = parser.add_mutually_exclusive_group()
+
+group.add_argument("--one", action='store_true',
+                   help="Make one day graph.",
+                   )
+
+group.add_argument("--two", action='store_true',
+                   help="Make two day graph.",
+                   )
+
+group.add_argument("--three", action='store_true',
+                   help="Make three day graph.",
+                   )
+
+args = parser.parse_args()
+
+if args.one:
+    deltaT = dt.timedelta(hours=24)
+elif args.two:
+    deltaT = dt.timedelta(hours=48)
+elif args.three:
+    deltaT = dt.timedelta(hours=72)
+else:
+    raise Exception('Option three, two, or one must be present.')
 
 now = dt.datetime.utcnow().isoformat(timespec='minutes')
 end = (dt.datetime.utcnow() - deltaT).isoformat(timespec='minutes')
