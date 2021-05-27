@@ -66,6 +66,63 @@ ax.bar(
     width=0.075,
 )
 
+
+ax.axhline(y=9, color='purple', lw=1)  # Class G5
+ax.axhline(y=8, color='purple', lw=1)  # Class G4
+ax.axhline(y=7, color='purple', lw=1)  # Class G3
+ax.axhline(y=6, color='purple', lw=1)  # Class G2
+ax.axhline(y=5, color='purple', lw=1)  # Class G1
+
+ax.annotate(
+    "G5",
+    (0, 0.97),
+    xycoords="axes fraction",
+    xytext=(10,0),
+    textcoords="offset points",
+    backgroundcolor="purple",
+    color="white",
+)
+
+ax.annotate(
+    "G4",
+    (0, 0.86),
+    xycoords="axes fraction",
+    xytext=(10,0),
+    textcoords="offset points",
+    backgroundcolor="purple",
+    color="white",
+)
+
+ax.annotate(
+    "G3",
+    (0, 0.76),
+    xycoords="axes fraction",
+    xytext=(10,0),
+    textcoords="offset points",
+    backgroundcolor="purple",
+    color="white",
+)
+
+ax.annotate(
+    "G2",
+    (0, 0.65),
+    xycoords="axes fraction",
+    xytext=(10,0),
+    textcoords="offset points",
+    backgroundcolor="purple",
+    color="white",
+)
+
+ax.annotate(
+    "G1",
+    (0, 0.55),
+    xycoords="axes fraction",
+    xytext=(10,0),
+    textcoords="offset points",
+    backgroundcolor="purple",
+    color="white",
+)
+
 ax.set_xlabel("Time (DoY:Hr)")
 ax.set_ylabel("K Index")
 
