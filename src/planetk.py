@@ -3,6 +3,7 @@ import pathlib as pl
 import matplotlib; matplotlib.use('cairo')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.ticker as mticker
 import requests
 import pandas as pd
 import funcs
@@ -50,14 +51,15 @@ plt.style.use(r'./src/my_style')
 
 fig = plt.figure(
     num=1,
-    figsize=(10, 10),
+    figsize=(10, 20),
     tight_layout=False,
     constrained_layout=True,
 )
 
 fig.suptitle("Plantary K Index")
 
-ax = plt.gca()
+ax = plt.subplot2grid((2, 1), (0, 0), rowspan=1, colspan=1)
+ax1 = plt.subplot2grid((2, 1), (1, 0), rowspan=1, colspan=1)
 
 ax.bar(
     kp['time_tag'],
@@ -134,6 +136,24 @@ ax.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
 ax.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 
 ax.grid(b=True, which='both', lw=0.6)
+
+
+ax1.bar(
+    kp['time_tag'],
+    kp['a_running'],
+    lw=0,
+    width=0.075,
+)
+
+ax1.set_ylim([-1, 101])
+ax1.set_yticks([0, 20, 30, 40, 50, 100], minor=False)
+ax1.set_yticks([10, 60, 70, 80, 90], minor=True)
+ax1.grid(b=True, which='Major', axis='y', color='red', lw=0.8)
+ax1.grid(b=True, which='Minor', axis='y', lw=0.8)
+ax1.tick_params(axis='both', which='both', length=12)
+ax1.yaxis.set_major_formatter(mticker.FormatStrFormatter('% 1.0f'))
+ax1.xaxis.set_major_formatter(mdates.DateFormatter(DTG_FMT))
+ax1.xaxis.set_minor_formatter(mdates.DateFormatter(DTG_FMT))
 
 fig.savefig('./web/img/kp.svg')
 
