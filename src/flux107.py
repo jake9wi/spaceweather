@@ -100,6 +100,7 @@ def plot(obsv, pred):
         zorder=3,
         label='ninety_day_mean',
         color='0.75',
+        where='mid',
     )
 
     ax.bar(
